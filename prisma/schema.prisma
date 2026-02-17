@@ -32,7 +32,7 @@ model Company {
   website String?
   email String @unique
   telphone String @unique
-  pesponsavelName String?
+  responsavelName String?
   role  String
   password String
   address String
@@ -40,5 +40,4 @@ model Company {
   Province String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime
 }
