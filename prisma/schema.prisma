@@ -21,3 +21,24 @@ model Student {
   password  String
   createdAt DateTime @default(now())
 }
+
+model Company {
+  id  Int @id @default(autoincrement())
+  name String @unique
+  nif String @unique
+  description String?
+  segment String
+  size String
+  website String?
+  email String @unique
+  telphone String @unique
+  pesponsavelName String?
+  role  String
+  password String
+  address String
+  city String
+  Province String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
