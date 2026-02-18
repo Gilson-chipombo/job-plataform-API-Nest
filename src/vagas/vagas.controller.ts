@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { VagasService } from './vagas.service';
 
 @Controller('vagas')
@@ -10,5 +10,8 @@ export class VagasController {
 
     @Post('create')
     create(@Body() body){ return this.vagas.create(body); }
+
+    @Get(':id')
+    findOne(@Param('id') id: String){ return this.vagas.findOne(+id); }
 
 }

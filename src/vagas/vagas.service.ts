@@ -6,10 +6,62 @@ export class VagasService {
     constructor(private prisma: PrismaService){}
 
     async getAll(){
-        return this.prisma.vaga.findMany();
+        return this.prisma.vaga.findMany({
+            select: {
+                id: true,
+                title: true,
+                type: true,
+                Location: true,
+                minSalary: true,
+                maxSalary: true,
+                experience: true,
+                description: true,
+                Responsability: true,
+                requirements: true,
+                skills: true,
+                beneficios: true,
+                idCompany: true,
+                createdAt: true,
+                company: {
+                    select:{
+                        name: true
+                    }
+                }
+            }
+        });
     }
 
     async create(data: any){
         return this.prisma.vaga.create({ data });
+    }
+
+    async findOne(id: number){
+        return this.prisma.vaga.findUnique({where: { id },
+            select: {
+                id: true,
+                title: true,
+                type: true,
+                Location: true,
+                minSalary: true,
+                maxSalary: true,
+                experience: true,
+                description: true,
+                Responsability: true,
+                requirements: true,
+                skills: true,
+                beneficios: true,
+                idCompany: true,
+                company: {
+                    select:{
+                        name: true,
+                        website: true,
+                        Province: true,
+                        address: true,
+                        segment: true,
+                        description: true
+                    }
+                }
+            }
+        })
     }
 }

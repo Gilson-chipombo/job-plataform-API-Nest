@@ -53,10 +53,10 @@ model Vaga {
   maxSalary      Float?
   experience     String
   description    String?
-  Responsability String?
-  requirements   String?
-  skills         String?
-  beneficios     String?
+  Responsability String?[]
+  requirements   String?[]
+  skills         String?[]
+  beneficios     String?[]
   idCompany      Int
 
   company Company @relation(fields: [idCompany], references: [id])
