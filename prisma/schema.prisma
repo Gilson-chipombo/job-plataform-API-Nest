@@ -8,18 +8,21 @@ datasource db {
 }
 
 model Student {
-  id           Int      @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   fullName     String
-  email        String   @unique
-  telphone     Int      @unique
-  NIF          String   @unique
+  email        String  @unique
+  telphone     Int     @unique
+  nif          String  @unique
   school       String
-  Year         String
+  year         String
   Turno        String
-  AreaInterest String
+  areaInterest String
   skills       String?
   password     String
-  createdAt    DateTime @default(now())
+
+  applies Apply[]
+
+  createdAt DateTime @default(now())
 }
 
 model Company {
@@ -48,18 +51,35 @@ model Vaga {
   id             Int     @id @default(autoincrement())
   title          String
   type           String
-  Location       String
+  location       String
   minSalary      Float
   maxSalary      Float?
   experience     String
   description    String?
-  Responsability String?[]
-  requirements   String?[]
-  skills         String?[]
-  beneficios     String?[]
+  responsability String?
+  requirements   String?
+  skills         String?
+  beneficios     String?
   idCompany      Int
 
   company Company @relation(fields: [idCompany], references: [id])
 
+  applies Apply[]
+
   createdAt DateTime @default(now())
+}
+
+model Apply {
+  id          Int    @id @default(autoincrement())
+  idStudent   Int
+  idVaga      Int
+  description String
+  status      String @default("pendente")
+
+  student Student @relation(fields: [idStudent], references: [id], onDelete: Cascade)
+  vaga    Vaga    @relation(fields: [idVaga], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([idStudent, idVaga])
 }
