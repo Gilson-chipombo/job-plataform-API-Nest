@@ -7,7 +7,13 @@ export class CompaniesService {
 
     async findAll()
     {
-        return this.prisma.company.findMany();
+        return this.prisma.company.findMany({
+            include: {
+                _count: {
+                    select: { vagas: true }
+                }
+            }
+        });
     }
 
     async create(data: any){
