@@ -14,11 +14,11 @@ export class UsersService {
                 fullName: true,
                 email: true,
                 telphone: true,
-                NIF: true,
+                nif: true,
                 school: true,
-                Year: true,
-                Turno: true,
-                AreaInterest: true,
+                year: true,
+                turno: true,
+                areaInterest: true,
                 skills: true
            }
         });
@@ -28,7 +28,7 @@ export class UsersService {
 
         const email    = data.email;
         const telphone = data.telphone;
-        const NIF      = data.NIF;
+        const nif      = data.NIF;
 
         const findEmail = await this.prisma.student.findFirst({ where: { email } });
 
@@ -38,9 +38,9 @@ export class UsersService {
         
         if (findTelphone) return {"message": "Este número já existe."};
 
-        const findNIF = await this.prisma.student.findFirst({ where: { NIF } });
+        //const findNIF = await this.prisma.student.findFirst({ where: { nif } });
 
-        if (findNIF) return {"message": "Este NIF já existe."};
+        //if (findNIF) return {"message": "Este NIF já existe."};
 
         return this.prisma.student.create({ data });
     }
@@ -52,11 +52,11 @@ export class UsersService {
                 fullName: true,
                 email: true,
                 telphone: true,
-                NIF: true,
+                nif: true,
                 school: true,
-                Year: true,
-                Turno: true,
-                AreaInterest: true,
+                year: true,
+                turno: true,
+                areaInterest: true,
                 skills: true 
             }
         });
@@ -68,5 +68,17 @@ export class UsersService {
 
     async remove(id: number){
         return this.prisma.student.delete({where: {id}})
+    }
+
+    async findByEmail(email: string)
+    {
+        return this.prisma.student.findUnique({where: {email},
+            select:{
+                id: true,
+                fullName: true,
+                email: true,
+                password: true,
+            }
+        });
     }
 }
