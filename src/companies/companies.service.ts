@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { log } from 'console';
+
 import { PrismaService } from 'prisma/prisma.service';
+import { AppliesService } from 'src/applies/applies.service';
 
 @Injectable()
 export class CompaniesService {
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService ){}
 
     async findAll()
     {
@@ -23,7 +24,6 @@ export class CompaniesService {
 
     async findByEmail(email: string)
     {
-        console.log("\n\n\n\n\n"+email+"\n\n\n\n\n");
         return this.prisma.company.findUnique({where: {email},
             select:{
                 id: true,
@@ -32,5 +32,15 @@ export class CompaniesService {
                 password: true,
             }
         });
+    }
+
+    async getAmountVagas(id: number){
+        return this.prisma.company.findMany({where: { id },
+            select:{
+                _count: {
+                    select: {vagas: true }
+                }
+            }
+        })
     }
 }

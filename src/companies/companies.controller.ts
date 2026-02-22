@@ -14,4 +14,9 @@ export class CompaniesController {
     create(@Body() body){
         return this.comapanies.create(body);
     }
+
+    @Get('/amount/vagas/:id')
+    getAmountVagas(@Param('id') id: String){
+        return this.comapanies.getAmountVagas(+id);
+    }
 }
