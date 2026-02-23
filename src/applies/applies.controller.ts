@@ -19,4 +19,9 @@ export class AppliesController {
     async getApplyById (@Param('id') id: String){
         return await this.applies.getApplyById(+id);
     }
+
+    @Get('/vaga/:id')
+    async appliesByVaga(@Param('id') id: String){
+        return await this.applies.appliesByVaga(+id);
+    }
 }

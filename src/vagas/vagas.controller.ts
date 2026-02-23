@@ -14,4 +14,14 @@ export class VagasController {
     @Get(':id')
     findOne(@Param('id') id: String){ return this.vagas.findOne(+id); }
 
+    @Get('/company/:id')
+    async vagasByCompany(@Param('id') id: String){
+        return await this.vagas.vagasByCompany(+id);
+    }
+
+    @Get('/company/applies/:id')
+    appliesByCompany(@Param('id') id: String){
+        return this.vagas.appliesByCompany(+id);
+    }
+
 }

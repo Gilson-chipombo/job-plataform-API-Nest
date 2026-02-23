@@ -64,4 +64,40 @@ export class VagasService {
             }
         })
     }
+    // retorna as vagas que a compania publicou e a qtdade de candidaturas
+    async vagasByCompany(id: number){
+        return this.prisma.vaga.findMany({
+            where: {idCompany: id},
+            include:{
+                _count: {
+                    select: {
+                      applies: true
+                    }
+                }
+            }
+        })
+    }
+    // Retorna as vagas e os estudantes cadastrados
+    async appliesByCompany(id: number){
+        return this.prisma.vaga.findMany({ where: {idCompany: id},
+            select:{
+                applies: {
+                    select:{
+                        id: true,
+                        idVaga: true,
+                        idStudent: true,
+                        status: true,
+                        student: {
+                            select:{
+                                id: true,
+                                fullName: true,
+                                areaInterest: true
+                            }
+                        }
+                    },
+                },
+
+            }
+        });
+    }
 }

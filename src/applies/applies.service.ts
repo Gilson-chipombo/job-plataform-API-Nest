@@ -15,4 +15,30 @@ export class AppliesService {
     }
 
     getApplyById(id: number){ return this.prisma.apply.findUnique({ where: { id } }); }
+
+    //Candidaturas por empresa
+    
+
+    //Studantes que aplicaram para uma vaga
+    async appliesByVaga(id: number){
+        return this.prisma.apply.findMany({where: { idVaga: id },
+            select: {
+                idVaga: true,
+                idStudent: true,
+                status: true,
+                student: {
+                    select:{
+                        fullName: true,
+                        email: true,
+                        telphone: true,
+                        school: true,
+                        areaInterest: true,
+                        skills: true,
+                    }
+                }
+            }
+        });
+    }
+
+
 }
