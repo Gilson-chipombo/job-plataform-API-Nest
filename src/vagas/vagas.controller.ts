@@ -6,22 +6,31 @@ export class VagasController {
     constructor(private vagas: VagasService){}
 
     @Get()
-    getAll() { return this.vagas.getAll(); }
+    async getAll() { return await this.vagas.getAll(); }
 
     @Post('create')
-    create(@Body() body){ return this.vagas.create(body); }
+    async create(@Body() body){ return await this.vagas.create(body); }
+
+    @Get('/recentes')
+    async vagasRecentes(){
+        return await this.vagas.vagasRecentes();
+    }
+
+    @Get('/destaques')
+    async vagasDestaques(){
+        return await this.vagas.vagasDestaques();
+    }
 
     @Get(':id')
-    findOne(@Param('id') id: String){ return this.vagas.findOne(+id); }
+    async findOne(@Param('id') id: string){ return await this.vagas.findOne(+id); }
 
     @Get('/company/:id')
-    async vagasByCompany(@Param('id') id: String){
+    async vagasByCompany(@Param('id') id: string){
         return await this.vagas.vagasByCompany(+id);
     }
 
     @Get('/company/applies/:id')
-    appliesByCompany(@Param('id') id: String){
+    appliesByCompany(@Param('id') id: string){
         return this.vagas.appliesByCompany(+id);
     }
-
 }

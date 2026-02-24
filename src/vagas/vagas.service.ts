@@ -36,7 +36,7 @@ export class VagasService {
     }
 
     async findOne(id: number){
-        return this.prisma.vaga.findUnique({where: { id },
+        return this.prisma.vaga.findUnique({where: { id: id },
             select: {
                 id: true,
                 title: true,
@@ -62,7 +62,7 @@ export class VagasService {
                     }
                 }
             }
-        })
+        });
     }
     // retorna as vagas que a compania publicou e a qtdade de candidaturas
     async vagasByCompany(id: number){
@@ -79,7 +79,7 @@ export class VagasService {
     }
     // Retorna as vagas e os estudantes cadastrados
     async appliesByCompany(id: number){
-        return this.prisma.vaga.findMany({ where: {idCompany: id},
+        return this.prisma.vaga.findMany({ where: {},
             select:{
                 applies: {
                     select:{
@@ -97,6 +97,23 @@ export class VagasService {
                     },
                 },
 
+            }
+        });
+    }
+
+    async vagasDestaques(){
+        return this.prisma.vaga.findMany({ 
+            where: { type: "estagio" },
+            take: 3,
+        });
+    }
+
+    async vagasRecentes()
+    {
+        return this.prisma.vaga.findMany({
+            take: 6,
+            orderBy:{
+                createdAt: 'desc'
             }
         });
     }
