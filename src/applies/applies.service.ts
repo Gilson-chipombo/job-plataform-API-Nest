@@ -7,10 +7,8 @@ export class AppliesService {
     
     getAllApplies(){ return this.prisma.apply.findMany(); }
     
-    async create(data: any){ 
-        //Tenho que validar se o estudante e a vaga existem antes de criar a aplicação
-        //Tenho que validar se o estudante já aplicou para a vaga antes de criar a aplicação
-        
+    async create(data: any)
+    {         
         const alreadyApplied = await this.prisma.apply.findFirst({where: {
             AND: [
                 { idStudent: data.idStudent },
@@ -19,7 +17,7 @@ export class AppliesService {
             }
         });
 
-        if (alreadyApplied) return { "message": "Já fizeste uma candidatura a esta vaga" };
+        if (alreadyApplied) return { "message": "Já fizeste uma candidatura nesta vaga." };
         else
             return await this.prisma.apply.create({ data }); 
     }
