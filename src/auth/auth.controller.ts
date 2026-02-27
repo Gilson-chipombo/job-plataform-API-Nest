@@ -29,4 +29,16 @@ export class AuthController {
             return {"message": "Company credenciais inválidas"};
         return this.authService.login(company, "Company");
     }
+
+    @Post('admin/login')
+    async loginAdmin(@Body() body){
+        const admin = await this.authService.validateAdmin(
+            body.email,
+            body.password
+        )
+
+        if (!admin)
+            return {"message": "Company credenciais inválidas"};
+        return this.authService.login(admin, "Admin");
+    }
 }

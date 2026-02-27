@@ -6,6 +6,8 @@ import { CompaniesModule } from 'src/companies/companies.module';
 import { JwtModule } from '@nestjs/jwt'
 import { UsersService } from 'src/users/users.service';
 import { CompaniesService } from 'src/companies/companies.service';
+import { AdminModule } from 'src/admin/admin.module';
+import { AdminService } from 'src/admin/admin.service';
 
 
 @Module({
@@ -16,12 +18,14 @@ import { CompaniesService } from 'src/companies/companies.service';
     }),
     AuthModule,
     UsersModule,
-    CompaniesModule
+    CompaniesModule,
+    AdminModule
   ],
   providers: [
     AuthService, 
     UsersService,
-    CompaniesService
+    CompaniesService,
+    AdminService
   ],
   controllers: [AuthController]
 })
