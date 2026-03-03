@@ -25,7 +25,7 @@ export class AppliesService {
     getApplyById(id: number){ return this.prisma.apply.findUnique({ where: { id } }); }
 
     //Candidaturas por empresa
-    
+
 
     //Studantes que aplicaram para uma vaga
     async appliesByVaga(id: number){

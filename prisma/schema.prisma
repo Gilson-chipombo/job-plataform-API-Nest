@@ -17,6 +17,8 @@ model Student {
   year         String
   turno        String
   areaInterest String
+  state        String? @default("Pendente")
+  type         String? @default("Estudante")
   skills       String?
   password     String
 
@@ -38,6 +40,8 @@ model Company {
   responsavelName String?
   role            String
   password        String
+  state           String  @default("Pendente")
+  type            String? @default("Empresa")
   address         String
   city            String
   Province        String
