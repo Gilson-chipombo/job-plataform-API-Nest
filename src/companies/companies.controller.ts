@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 
 @Controller('companies')
@@ -18,5 +18,15 @@ export class CompaniesController {
     @Get('/amount/vagas/:id')
     getAmountVagas(@Param('id') id: String){
         return this.comapanies.getAmountVagas(+id);
+    }
+
+     @Put('reject/:id')
+    reject(@Param('id') id: String){
+        return this.comapanies.reject(+id);
+    }
+
+    @Put('approve/:id')
+    approve(@Param('id') id: String){
+        return this.comapanies.approve(+id);
     }
 }

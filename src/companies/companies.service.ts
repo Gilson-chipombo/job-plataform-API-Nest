@@ -10,6 +10,7 @@ export class CompaniesService {
     async findAll()
     {
         return this.prisma.company.findMany({
+            omit: {password: true},
             include: {
                 _count: {
                     select: { vagas: true }
@@ -20,6 +21,20 @@ export class CompaniesService {
 
     async create(data: any){
         return this.prisma.company.create({ data });
+    }
+
+    async reject(id: number){
+        return this.prisma.company.update({ 
+            where: {id},
+            data: {state: "rejeitado"}
+        })
+    }
+
+    async approve(id: number){
+        return this.prisma.company.update({
+            where: {id},
+            data: {state: "aprovado"}
+        })
     }
 
     async findByEmail(email: string)

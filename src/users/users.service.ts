@@ -7,21 +7,7 @@ export class UsersService {
     constructor(private prisma: PrismaService){}
 
     async findAll(){
-        return this.prisma.student.findMany({
-            select: 
-            {
-                id: true,
-                fullName: true,
-                email: true,
-                telphone: true,
-                nif: true,
-                school: true,
-                year: true,
-                turno: true,
-                areaInterest: true,
-                skills: true
-           }
-        });
+        return this.prisma.student.findMany({ omit: {password: true }});
     }
 
     async create(data: any) {
@@ -68,6 +54,20 @@ export class UsersService {
 
     async remove(id: number){
         return this.prisma.student.delete({where: {id}})
+    }
+
+    async reject(id: number){
+        return this.prisma.student.update({ 
+            where: {id},
+            data: {state: "rejeitado"}
+        })
+    }
+
+    async approve(id: number){
+        return this.prisma.student.update({
+            where: {id},
+            data: {state: "aprovado"}
+        })
     }
 
     async findByEmail(email: string)

@@ -22,6 +22,16 @@ export class UsersController {
     update(@Param('id') id: String, @Body() body){
         return this.userService.update(+id, body);
     }
+    
+    @Put('reject/:id')
+    reject(@Param('id') id: String){
+        return this.userService.reject(+id);
+    }
+
+    @Put('approve/:id')
+    approve(@Param('id') id: String){
+        return this.userService.approve(+id);
+    }
 
     @Delete(':id')
     remove(@Param('id') id: String){
