@@ -77,6 +77,7 @@ export class UsersService {
                 id: true,
                 fullName: true,
                 email: true,
+                state: true,
                 password: true,
             }
         });

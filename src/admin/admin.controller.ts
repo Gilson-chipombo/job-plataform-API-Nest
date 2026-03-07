@@ -14,4 +14,9 @@ export class AdminController {
     create(@Body() body){
         return this.adminService.create(body);
     }
+
+    @Get('dashboard')
+    async dashboard() {
+        return this.adminService.dashboardStats();
+    }
 }

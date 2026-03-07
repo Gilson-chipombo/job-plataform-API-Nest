@@ -4,6 +4,8 @@ import { access } from 'fs';
 import { AdminService } from 'src/admin/admin.service';
 import { CompaniesService } from 'src/companies/companies.service';
 import { UsersService } from 'src/users/users.service';
+import bcrypt from "bcrypt"
+import { error } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +23,7 @@ export class AuthService {
         //const isMatch = await bcrypt.compare(pass, student.password);
         
         if (student.password != pass) return null;
+        if (student.state != "aprovado") return null;
         return student;
     }
 
@@ -29,6 +32,7 @@ export class AuthService {
 
         if (!company) return null;
         if (company.password != pass) return null;
+        if (company.state != "aprovado") return null;
         return company;
     }
 

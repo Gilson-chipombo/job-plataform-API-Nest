@@ -44,6 +44,7 @@ export class CompaniesService {
                 id: true,
                 name: true,
                 email: true,
+                state: true,
                 password: true,
             }
         });

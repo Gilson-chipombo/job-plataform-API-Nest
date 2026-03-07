@@ -79,6 +79,7 @@ model Apply {
   idVaga      Int
   description String
   status      String @default("pendente")
+  cvPath          String?
 
   student Student @relation(fields: [idStudent], references: [id], onDelete: Cascade)
   vaga    Vaga    @relation(fields: [idVaga], references: [id], onDelete: Cascade)

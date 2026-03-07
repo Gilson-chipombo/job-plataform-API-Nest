@@ -7,7 +7,7 @@ export class AppliesService {
     
     getAllApplies(){ return this.prisma.apply.findMany(); }
     
-    async create(data: any)
+    async create(data: any, cvPath: string)
     {         
         const alreadyApplied = await this.prisma.apply.findFirst({where: {
             AND: [
@@ -16,7 +16,7 @@ export class AppliesService {
              ]     
             }
         });
-
+        data.cvPath = cvPath;
         if (alreadyApplied) return { "message": "Já fizeste uma candidatura nesta vaga." };
         else
             return await this.prisma.apply.create({ data }); 

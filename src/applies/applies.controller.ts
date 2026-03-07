@@ -1,5 +1,7 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AppliesService } from './applies.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('applies')
 export class AppliesController {
@@ -11,9 +13,24 @@ export class AppliesController {
     }
     
     @Post('create')
-    async createApply(@Body() body){
-        return await this.applies.create(body);
-    }
+    @UseInterceptors(FileInterceptor('cv', {
+    storage: diskStorage({
+      destination: './uploads/cv',
+      filename: (req, file, callback) => {
+        const unique = Date.now() + '-' + file.originalname;
+        callback(null, unique);
+      }
+    })
+  }))
+  async createApply(
+    @Body() data: any,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+
+    const cvPath = file ? file.filename : null;
+
+    return ;//this.applies.create(data, cvPath);
+  }
 
     @Get(':id')
     async getApplyById (@Param('id') id: String){

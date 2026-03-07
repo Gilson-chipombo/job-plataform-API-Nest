@@ -2,6 +2,14 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 
+
+export interface LoginResponse {
+    access_token: string;
+    idUser: number;
+    userType: string;
+    state?: string;
+}
+
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService){}
@@ -14,7 +22,8 @@ export class AuthController {
         );
 
         if (!student) 
-            return {"message": "Student credenciais inválidas"};
+            return {"message": "Student credenciais inválidas ou estudante ainda não aprovado"};
+        
         return this.authService.login(student, "Student");
     }
 
@@ -26,7 +35,7 @@ export class AuthController {
         )
 
         if (!company)
-            return {"message": "Company credenciais inválidas"};
+            return {"message": "Company credenciais inválidas ou empresa ainda  não aprovada    "};
         return this.authService.login(company, "Company");
     }
 
