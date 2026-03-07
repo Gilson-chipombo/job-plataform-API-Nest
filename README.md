@@ -33,6 +33,15 @@ $ npm install
 
 ## Compile and run the project
 
+## Como executar?
+```
+  - Criar um .env na raiz do projecto
+  - Criar um banco de dados com o nome: job-platform
+  - adicionar o LINK no .env : DATABASE_URL="mysql://root:@127.0.0.1:3306/job-platafrom?schema=public"
+  Exucte: npx prisma migrate dev
+        : npx prisma generate
+```
+
 ```bash
 # development
 $ npm run start
