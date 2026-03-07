@@ -1,4 +1,4 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
@@ -7,19 +7,27 @@ export class AppliesService {
     
     getAllApplies(){ return this.prisma.apply.findMany(); }
     
-    async create(data: any, cvPath: string)
+    async create(data: any, cvPath: string | null)
     {         
-        const alreadyApplied = await this.prisma.apply.findFirst({where: {
-            AND: [
-                { idStudent: data.idStudent },
-                { idVaga: data.idVaga }
-             ]     
+        const alreadyApplied = await this.prisma.apply.findFirst({
+            where: {
+                idStudent: Number(data.idStudent),
+                idVaga: Number(data.idVaga)
             }
         });
-        data.cvPath = cvPath;
-        if (alreadyApplied) return { "message": "Já fizeste uma candidatura nesta vaga." };
-        else
-            return await this.prisma.apply.create({ data }); 
+
+        if (alreadyApplied) {
+            return { message: "Já fizeste uma candidatura nesta vaga." };
+        }
+
+        return await this.prisma.apply.create({
+            data: {
+                idStudent: Number(data.idStudent),
+                idVaga: Number(data.idVaga),
+                description: data.description,
+                cvPath: cvPath
+            }
+        });
     }
 
     getApplyById(id: number){ return this.prisma.apply.findUnique({ where: { id } }); }
@@ -29,11 +37,12 @@ export class AppliesService {
 
     //Studantes que aplicaram para uma vaga
     async appliesByVaga(id: number){
-        return this.prisma.apply.findMany({where: { idVaga: id },
+        const applies = await this.prisma.apply.findMany({where: { idVaga: id },
             select: {
                 idVaga: true,
                 idStudent: true,
                 status: true,
+                cvPath: true,
                 student: {
                     select:{
                         fullName: true,
@@ -46,7 +55,13 @@ export class AppliesService {
                 }
             }
         });
-    }
 
+        return applies.map(apply => ({
+        ...apply,
+        cvUrl: apply.cvPath
+            ? `http://127.0.0.1:3000/uploads/cv/${apply.cvPath}`
+            : null
+        }));
+    }
 
 }

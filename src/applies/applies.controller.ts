@@ -14,23 +14,23 @@ export class AppliesController {
     
     @Post('create')
     @UseInterceptors(FileInterceptor('cv', {
-    storage: diskStorage({
-      destination: './uploads/cv',
-      filename: (req, file, callback) => {
-        const unique = Date.now() + '-' + file.originalname;
-        callback(null, unique);
-      }
-    })
-  }))
-  async createApply(
-    @Body() data: any,
-    @UploadedFile() file: Express.Multer.File
-  ) {
+      storage: diskStorage({
+        destination: './uploads/cv',
+        filename: (req, file, callback) => {
+          const unique = Date.now() + '-' + file.originalname;
+          callback(null, unique);
+        }
+      })
+    }))
+    async createApply(
+      @Body() data: any,
+      @UploadedFile() file?: Express.Multer.File
+    ) {
 
-    const cvPath = file ? file.filename : null;
+      const cvPath = file ? file.filename : null;
 
-    return ;//this.applies.create(data, cvPath);
-  }
+      return this.applies.create(data, cvPath);
+    }
 
     @Get(':id')
     async getApplyById (@Param('id') id: String){
