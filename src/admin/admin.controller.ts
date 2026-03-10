@@ -10,6 +10,11 @@ export class AdminController {
         return this.adminService.findAll();
     }
 
+    @Get("/pendentes")
+    getAllPendentes(){
+        return this.adminService.findAllPendentes();
+    }
+
     @Post('create')
     create(@Body() body){
         return this.adminService.create(body);

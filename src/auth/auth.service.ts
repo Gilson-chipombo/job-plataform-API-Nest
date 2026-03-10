@@ -20,9 +20,8 @@ export class AuthService {
 
         if (!student) return null;
 
-        //const isMatch = await bcrypt.compare(pass, student.password);
-        
-        if (student.password != pass) return null;
+        const isMatch = await bcrypt.compare(pass, student.password);
+        if (!isMatch) return null;
         if (student.state != "aprovado") return null;
         return student;
     }
@@ -31,7 +30,8 @@ export class AuthService {
         const company = await this.companyService.findByEmail(email);
 
         if (!company) return null;
-        if (company.password != pass) return null;
+        const isMatch = await bcrypt.compare(pass, company.password);
+        if (!isMatch) return null;
         if (company.state != "aprovado") return null;
         return company;
     }
@@ -40,7 +40,8 @@ export class AuthService {
         const admin = await this.adminService.findByEmail(email);
 
         if (!admin) return null;
-        if (admin.password != pass) return null;
+        const isMatch = await bcrypt.compare(pass, admin.password);
+        if (!isMatch) return null;
         return admin;
     }
 

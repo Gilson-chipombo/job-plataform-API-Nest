@@ -27,6 +27,17 @@ export class AdminService {
         });
     }
 
+    async findAllPendentes()
+    {
+        const student = await this.prisma.student.findMany({ where: { state: "pendente" } });
+
+         const companies = await this.prisma.company.findMany({
+            where: { state: "pendente" }
+        });
+
+        return { student, companies }
+    }
+
     async dashboardStats() {
 
         const totalUsuarios = await this.prisma.student.count();

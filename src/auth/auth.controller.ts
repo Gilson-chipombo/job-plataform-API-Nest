@@ -47,7 +47,7 @@ export class AuthController {
         )
 
         if (!admin)
-            return {"message": "Company credenciais inválidas"};
+            return {"message": "Admin credenciais inválidas"};
         return this.authService.login(admin, "Admin");
     }
 }

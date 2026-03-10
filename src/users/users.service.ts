@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-
+import * as bcrypt from 'bcrypt'; 
 
 @Injectable()
 export class UsersService {
@@ -23,6 +23,8 @@ export class UsersService {
         const findTelphone = await this.prisma.student.findFirst({ where: { telphone } });
         
         if (findTelphone) return {"message": "Este número já existe."};
+
+        data.password = await bcrypt.hash(data.password, 10);
 
         //const findNIF = await this.prisma.student.findFirst({ where: { nif } });
 
