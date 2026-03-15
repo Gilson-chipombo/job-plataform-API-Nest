@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
 import { AppliesService } from './applies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -40,5 +40,16 @@ export class AppliesController {
     @Get('/vaga/:id')
     async appliesByVaga(@Param('id') id: String){
         return await this.applies.appliesByVaga(+id);
+    }
+
+    @Get('/student/:id')
+    getStudentApply(@Param('id') id: String){
+      return this.applies.getStudentApply(+id);
+    }
+
+    @Delete(':id')
+    deleteStudentApply(@Param('id') id: String)
+    {
+      return this.applies.deleteApply(+id)
     }
 }

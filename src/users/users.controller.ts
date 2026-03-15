@@ -13,6 +13,10 @@ export class UsersController {
     create(@Body() body){
         return this.userService.create(body);
     }
+    @Post('delete/:id')
+    delete(@Param('id') id: String){
+        return this.userService.delete(+id);
+    }
     
     @Get(':id')
     findOne(@Param('id') id: String){

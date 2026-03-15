@@ -65,6 +65,11 @@ export class UsersService {
         })
     }
 
+    async delete(id: number)
+    {
+        return this.prisma.student.delete({where: {id}})
+    }
+
     async approve(id: number){
         return this.prisma.student.update({
             where: {id},

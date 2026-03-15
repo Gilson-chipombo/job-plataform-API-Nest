@@ -35,6 +35,22 @@ export class AppliesService {
     //Candidaturas por empresa
 
 
+    deleteApply(id: number){
+        return this.prisma.apply.delete({where: {id} });
+    }
+ 
+
+    async getStudentApply(id: number) {
+        return await this.prisma.apply.findMany({
+            where: {idStudent: id },
+            include: {
+                vaga: true
+                }
+        });
+
+        
+    }
+
     //Studantes que aplicaram para uma vaga
     async appliesByVaga(id: number){
         const applies = await this.prisma.apply.findMany({where: { idVaga: id },
