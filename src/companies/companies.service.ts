@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'prisma/prisma.service';
 import { AppliesService } from 'src/applies/applies.service';
-
+import * as bcrypt from 'bcrypt'; 
 @Injectable()
 export class CompaniesService {
     constructor(private prisma: PrismaService ){}
@@ -20,6 +20,8 @@ export class CompaniesService {
     }
 
     async create(data: any){
+          data.password = await bcrypt.hash(data.password, 10);
+        
         return this.prisma.company.create({ data });
     }
 
