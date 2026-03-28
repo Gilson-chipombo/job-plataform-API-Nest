@@ -7,6 +7,7 @@ import { CompaniesModule } from './companies/companies.module';
 import { VagasModule } from './vagas/vagas.module';
 import { AppliesModule } from './applies/applies.module';
 import { AdminModule } from './admin/admin.module';
+import { WhatssappModule } from './whatssapp/whatssapp.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { AdminModule } from './admin/admin.module';
     CompaniesModule,
     VagasModule,
     AppliesModule,
-    AdminModule
+    AdminModule,
+    WhatssappModule
   ],
   controllers: [AppController],
   providers: [AppService],
