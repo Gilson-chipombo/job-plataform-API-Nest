@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import type { Response } from 'express';
-import { BotService } from '../bot.service';
+import { BotService } from '../Bot/bot.service';
 
 
 @Controller('webhook')

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { WhatsappService } from "./whatssapp.service";
+import { WhatsappService } from "../whatssapp.service";
 import { stat } from "fs";
 
 @Injectable()
