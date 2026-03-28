@@ -3,11 +3,12 @@ import { queueProvider } from "src/redis/queue.provider";
 
 @Injectable()
 export class BotService {
-    async sendMessage(phoneNumber: string, message: string): Promise<void> {
+    async sendMessage(from: string, text: string): Promise<void> {
         //enfileira a mensagem para envio
+        console.log('BotService.sendMessage called:', { from, text });
         await queueProvider.add('send-message', { 
-            phoneNumber,
-            message
+            from,
+            text
         },{
             attempts: 3, // Tenta enviar a mensagem até 3 vezes em caso de falha
             backoff: {
@@ -17,9 +18,9 @@ export class BotService {
         });
     }
 
-    async sendTemplate(phoneNumber: string): Promise<void> {
+    async sendTemplate(from: string): Promise<void> {
         await queueProvider.add('send-template', { 
-            phoneNumber,
+            from,
         },{
             attempts: 3,
             backoff: {

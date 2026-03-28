@@ -7,9 +7,11 @@ const whatsappService = new WhatsappService();
 const stateService = new BotStateService();
 
 export const botWorker = new Worker('message-queue',
-    async job => {
-       const {from, text} = job.data;
+     async job => {
+         const { from, text } = job.data;
+         console.log('Worker received job:', { from, text, data: job.data });
        const state = await stateService.getState(from);
+       console.log('User state:', { from, state, text });
 
        if (!state){
             await stateService.setState(from, 'menu');
@@ -21,7 +23,9 @@ export const botWorker = new Worker('message-queue',
        }
         
        if (state === 'menu') {
-            if (text === '1') {
+            const trimmedText = text?.trim();
+            console.log('Menu state - comparing:', { trimmedText, type: typeof trimmedText });
+            if (trimmedText === '1') { 
                 await stateService.setState(from, 'atendente');
                 return whatsappService.sendMessage(from, 'Você escolheu falar com um atendente. Por favor, aguarde um momento enquanto conectamos você a um de nossos representantes.');
             } else if (text === '2') {
