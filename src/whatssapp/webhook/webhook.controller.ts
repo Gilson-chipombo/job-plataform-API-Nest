@@ -1,9 +1,11 @@
 import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { BotService } from '../bot.service';
+
 
 @Controller('webhook')
 export class WebhookController {
+    private readonly token = process.env.WHATSAPP_ACCESS_TOKEN;
     constructor(private readonly botService: BotService){}
 
     @Get()
@@ -13,7 +15,7 @@ export class WebhookController {
         @Query('hub.challenge') challenge: string,
         @Res() res: Response,
     ){
-        if (mode === 'subscribe' && token === 'meu_token_seguro')
+        if (mode === 'subscribe' && token === this.token)
             return res.status(200).send(challenge);
         return res.sendStatus(403);
     }
@@ -21,6 +23,8 @@ export class WebhookController {
     @Post()
     async receive(@Body() body: any){
         try {
+            
+            console.log(JSON.stringify(body));
             const entry = body.entry?.[0];
             const changes = entry?.changes?.[0];
             const message = changes?.value?.messages?.[0];

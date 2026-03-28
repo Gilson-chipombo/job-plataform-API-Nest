@@ -23,20 +23,20 @@ export class BotService {
                 this.userState.set(from, 'saldo');
                 return this.whatsappService.sendMessage(
                     from,
-                    `💰 Seu saldo é: 10.000 Kz`
+                    `Seu saldo é: 10.000 Kz`
                 )
             }
 
             if (text === '2'){
                 return this.whatsappService.sendMessage(
                     from,
-                    `📦 Serviços disponíveis:\n- Internet\n- Recargas`
+                    `Serviços disponíveis:\n- Internet\n- Recargas`
                 );
             }
 
             return this.whatsappService.sendMessage(
                 from,
-                `❌ Opção inválida\n\n1 Consultar saldo\n2 Ver serviços`
+                `Opção inválida\n\n1 Consultar saldo\n2 Ver serviços`
             );
         }
     }
