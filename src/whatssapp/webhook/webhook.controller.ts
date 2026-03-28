@@ -5,7 +5,7 @@ import { BotService } from '../Bot/bot.service';
 
 @Controller('webhook')
 export class WebhookController {
-    private readonly token = process.env.WHATSAPP_ACCESS_TOKEN;
+    private readonly verifyToken = process.env.WHATSAPP_ACCESS_TOKEN;
     constructor(private readonly botService: BotService){}
 
 
@@ -18,7 +18,8 @@ export class WebhookController {
          @Query('hub.challenge') challenge: string,
          @Res() res: Response,
      ){
-         if (mode === 'subscribe' && token === this.token)
+         console.log('Webhook verification:', { mode, token, verifyToken: this.verifyToken, match: token === this.verifyToken });
+         if (mode === 'subscribe' && token === this.verifyToken)
              return res.status(200).send(challenge);
          return res.sendStatus(403);
      }
@@ -34,15 +35,8 @@ export class WebhookController {
 
              if (!message) return 'EVENT_RECEIVED';
 
-             const from = message.from; //user number
+             const from = message.from; // user number
              const text =  message.text?.body;
-             
-             console.log('Webhook received message:', { from, text, messageType: message.type, fullMessage: message });
-
-             if (!text) {
-                 console.log('No text in message, skipping');
-                 return 'EVENT_RECEIVED';
-             }
 
              await this.botService.sendMessage(from, text);
             

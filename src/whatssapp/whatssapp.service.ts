@@ -8,29 +8,37 @@ export class WhatsappService {
 
   async sendMessage(to: string, message: string) {
     const url = `https://graph.facebook.com/v22.0/${this.phoneNumberId}/messages`;
+    const cleanedTo = to.replace(/\D/g, '');
 
     const body = {
-        messaging_product: "whatsapp",
-        to: to.replace(/\D/g, ''),
-        type: "text",
-        text: {
+      messaging_product: "whatsapp",
+      to: cleanedTo,
+      type: "text",
+      text: {
         body: message,
-        },
+      },
     };
 
+    console.log('Sending WhatsApp message:', { to: cleanedTo, message });
     const response = await fetch(url, {
-        method: 'POST',
-        headers: {
+      method: 'POST',
+      headers: {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+      },
+      body: JSON.stringify(body),
     });
 
-    return response.json();
+    const data = await response.json();
+    if (data.error) {
+      console.error('WhatsApp API error:', data.error);
+    } else {
+      console.log('WhatsApp message sent successfully:', data);
+    }
+    return data;
   }
 
-  async sendTemplate(to: string) {
+    async sendTemplate(to: string) {
     const url = `https://graph.facebook.com/v22.0/${this.phoneNumberId}/messages`;
 
     const body = {
@@ -59,4 +67,6 @@ export class WhatsappService {
 
     return data;
     }
+
+
 }

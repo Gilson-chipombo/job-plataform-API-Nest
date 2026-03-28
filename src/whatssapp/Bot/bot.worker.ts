@@ -22,7 +22,7 @@ export const botWorker = new Worker('message-queue',
             );
        }
         
-       if (state === 'menu') {
+      // if (state === 'menu') {
             const trimmedText = text?.trim();
             console.log('Menu state - comparing:', { trimmedText, type: typeof trimmedText });
             if (trimmedText === '1') { 
@@ -37,7 +37,7 @@ export const botWorker = new Worker('message-queue',
             } else {
                 return whatsappService.sendMessage(from, 'Opção inválida. Por favor, escolha uma opção:\n1. Falar com um atendente\n2. Ver nossos produtos\n3. Obter suporte técnico');
             }
-       }
+       //}
 
        if (state === 'produtos') {
             return whatsappService.sendMessage(from, `Você solicitou informações sobre o produto: ${text}. Em breve, um de nossos representantes entrará em contato para fornecer mais detalhes.`);
