@@ -10,21 +10,21 @@ export class WhatsappService {
     const url = `https://graph.facebook.com/v22.0/${this.phoneNumberId}/messages`;
 
     const body = {
-      messaging_product: "whatsapp",
-      to,
-      type: "text",
-      text: {
+        messaging_product: "whatsapp",
+        to: to.replace(/\D/g, ''),
+        type: "text",
+        text: {
         body: message,
-      },
+        },
     };
 
     const response = await fetch(url, {
-      method: 'POST',
-      headers: {
+        method: 'POST',
+        headers: {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
+        },
+        body: JSON.stringify(body),
     });
 
     return response.json();
