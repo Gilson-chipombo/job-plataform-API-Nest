@@ -17,7 +17,7 @@ model Student {
   year         String
   turno        String
   areaInterest String
-  state        String? @default("Pendente")
+  state        String? @default("aprovado")
   type         String? @default("Estudante")
   skills       String?
   password     String

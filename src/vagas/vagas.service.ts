@@ -10,7 +10,8 @@ export class VagasService {
             include:{
                 company: {
                     select:{
-                        name: true
+                        name: true,
+                        logo: true
                     }
                 },
                 _count: {
@@ -33,6 +34,7 @@ export class VagasService {
                 company: {
                     select:{
                         name: true,
+                        logo: true,
                         website: true,
                         Province: true,
                         address: true,
