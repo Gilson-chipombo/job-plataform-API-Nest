@@ -8,6 +8,7 @@ import { VagasModule } from './vagas/vagas.module';
 import { AppliesModule } from './applies/applies.module';
 import { AdminModule } from './admin/admin.module';
 import { WhatssappModule } from './whatssapp/whatssapp.module';
+import { Auth2Module } from './auth2/auth2.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { WhatssappModule } from './whatssapp/whatssapp.module';
     VagasModule,
     AppliesModule,
     AdminModule,
-    WhatssappModule
+    WhatssappModule,
+    Auth2Module
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
 import { VagasService } from './vagas.service';
 
 @Controller('vagas')
@@ -32,5 +32,10 @@ export class VagasController {
     @Get('/company/applies/:id')
     appliesByCompany(@Param('id') id: string){
         return this.vagas.appliesByCompany(+id);
+    }
+
+    @Delete(':id')
+    async deleteVaga(@Param('id') id: string){
+        return await this.vagas.deleteVaga(+id);
     }
 }

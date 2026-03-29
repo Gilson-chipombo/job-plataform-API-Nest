@@ -117,4 +117,10 @@ export class VagasService {
             }
         });
     }
+
+    async deleteVaga(id: number){
+        return this.prisma.vaga.delete({
+            where: { id }
+        });
+    }
 }
