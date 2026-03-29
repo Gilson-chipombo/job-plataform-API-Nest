@@ -61,4 +61,17 @@ export class CompaniesService {
             }
         })
     }
+
+    async updateLogo(id: number, logoPath: string){
+        return this.prisma.company.update({
+            where: {id},
+            data: {logo: logoPath} as any,
+            select: {
+                id: true,
+                name: true,
+                logo: true,
+                email: true
+            } as any
+        });
+    }
 }

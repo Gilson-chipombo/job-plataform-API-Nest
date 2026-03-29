@@ -9,6 +9,20 @@ export class AppliesService {
     
     async create(data: any, cvPath: string | null)
     {         
+        // Validar se a vaga ainda aceita candidaturas
+        const vaga = await this.prisma.vaga.findUnique({
+            where: { id: Number(data.idVaga) }
+        }) as any;
+
+        if (!vaga) {
+            throw new BadRequestException('Vaga não encontrada');
+        }
+
+        if (vaga.applicationDeadline && new Date() > vaga.applicationDeadline) {
+            throw new BadRequestException('O prazo para candidaturas nesta vaga expirou');
+        }
+
+        // Validar se já candidatou
         const alreadyApplied = await this.prisma.apply.findFirst({
             where: {
                 idStudent: Number(data.idStudent),

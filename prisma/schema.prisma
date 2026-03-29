@@ -45,6 +45,7 @@ model Company {
   address         String
   city            String
   Province        String
+  logo            String?
 
   vagas Vaga[]
 
@@ -52,19 +53,20 @@ model Company {
 }
 
 model Vaga {
-  id             Int     @id @default(autoincrement())
-  title          String
-  type           String
-  location       String
-  minSalary      Float
-  maxSalary      Float?
-  experience     String
-  description    String?
-  responsability String?
-  requirements   String?
-  skills         String?
-  beneficios     String?
-  idCompany      Int
+  id                  Int     @id @default(autoincrement())
+  title               String
+  type                String
+  location            String
+  minSalary           Float
+  maxSalary           Float?
+  experience          String
+  description         String?
+  responsability      String?
+  requirements        String?
+  skills              String?
+  beneficios          String?
+  idCompany           Int
+  applicationDeadline DateTime?
 
   company Company @relation(fields: [idCompany], references: [id])
 

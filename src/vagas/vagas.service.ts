@@ -7,24 +7,15 @@ export class VagasService {
 
     async getAll(){
         return this.prisma.vaga.findMany({
-            select: {
-                id: true,
-                title: true,
-                type: true,
-                location: true,
-                minSalary: true,
-                maxSalary: true,
-                experience: true,
-                description: true,
-                responsability: true,
-                requirements: true,
-                skills: true,
-                beneficios: true,
-                idCompany: true,
-                createdAt: true,
+            include:{
                 company: {
                     select:{
                         name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        applies: true
                     }
                 }
             }
@@ -36,21 +27,9 @@ export class VagasService {
     }
 
     async findOne(id: number){
-        return this.prisma.vaga.findUnique({where: { id: id },
-            select: {
-                id: true,
-                title: true,
-                type: true,
-                location: true,
-                minSalary: true,
-                maxSalary: true,
-                experience: true,
-                description: true,
-                responsability: true,
-                requirements: true,
-                skills: true,
-                beneficios: true,
-                idCompany: true,
+        return this.prisma.vaga.findUnique({
+            where: { id: id },
+            include: {
                 company: {
                     select:{
                         name: true,
@@ -75,7 +54,7 @@ export class VagasService {
                     }
                 }
             }
-        })
+        });
     }
     // Retorna as vagas e os estudantes cadastrados
     async appliesByCompany(id: number){
@@ -121,6 +100,25 @@ export class VagasService {
     async deleteVaga(id: number){
         return this.prisma.vaga.delete({
             where: { id }
+        });
+    }
+
+    async updateVaga(id: number, data: any){
+        return this.prisma.vaga.update({
+            where: { id },
+            data: data,
+            include: {
+                company: {
+                    select:{
+                        name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        applies: true
+                    }
+                }
+            }
         });
     }
 }
