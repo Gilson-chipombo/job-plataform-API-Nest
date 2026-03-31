@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AdminService {
@@ -8,11 +9,74 @@ export class AdminService {
     
     async findAll()
     {
-        return this.prisma.admin.findMany();
+        return this.prisma.admin.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                role: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
+    }
+
+    async findById(id: number) {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                role: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
+
+        if (!admin) {
+            throw new NotFoundException('Admin não encontrado');
+        }
+
+        return admin;
     }
 
     async create(data: any){
-        return this.prisma.admin.create({ data });
+        // Validar se email já existe
+        const existingAdmin = await this.prisma.admin.findUnique({
+            where: { email: data.email }
+        });
+
+        if (existingAdmin) {
+            throw new BadRequestException('Email já cadastrado');
+        }
+
+        // Hash da senha
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        return this.prisma.admin.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                password: hashedPassword,
+                phone: data.phone || null,
+                role: data.role || 'admin',
+                isActive: data.isActive !== false
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                role: true,
+                isActive: true,
+                createdAt: true
+            }
+        });
     }
 
     async findByEmail(email: string)
@@ -23,6 +87,88 @@ export class AdminService {
                 name: true,
                 email: true,
                 password: true,
+            }
+        });
+    }
+
+    async changePassword(id: number, currentPassword: string, newPassword: string) {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                password: true
+            }
+        });
+
+        if (!admin) {
+            throw new NotFoundException('Admin não encontrado');
+        }
+
+        // Verificar se a senha atual está correta
+        const isPasswordValid = await bcrypt.compare(currentPassword, admin.password);
+        if (!isPasswordValid) {
+            throw new BadRequestException('Senha atual incorreta');
+        }
+
+        // Hash da nova senha
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        return this.prisma.admin.update({
+            where: { id },
+            data: { password: hashedPassword },
+            select: {
+                id: true,
+                name: true,
+                email: true
+            }
+        });
+    }
+
+    async delete(id: number) {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id }
+        });
+
+        if (!admin) {
+            throw new NotFoundException('Admin não encontrado');
+        }
+
+        return this.prisma.admin.delete({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true
+            }
+        });
+    }
+
+    async update(id: number, data: any) {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id }
+        });
+
+        if (!admin) {
+            throw new NotFoundException('Admin não encontrado');
+        }
+
+        return this.prisma.admin.update({
+            where: { id },
+            data: {
+                name: data.name || undefined,
+                phone: data.phone !== undefined ? data.phone : undefined,
+                role: data.role || undefined,
+                isActive: data.isActive !== undefined ? data.isActive : undefined
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                role: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true
             }
         });
     }

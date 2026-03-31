@@ -48,6 +48,15 @@ export class AuthController {
 
         if (!admin)
             return {"message": "Admin credenciais inválidas"};
-        return this.authService.login(admin, "Admin");
+        
+        const loginResponse = await this.authService.login(admin, "Admin");
+        
+        return {
+            ...loginResponse,
+            id: admin.id,
+            name: admin.name,
+            email: admin.email,
+            idUser: admin.id
+        };
     }
 }
