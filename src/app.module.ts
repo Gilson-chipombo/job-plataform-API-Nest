@@ -19,7 +19,7 @@ import { Auth2Module } from './auth2/auth2.module';
     AppliesModule,
     AdminModule,
     WhatssappModule,
-    Auth2Module
+    Auth2Module,
   ],
   controllers: [AppController],
   providers: [AppService],
