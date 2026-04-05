@@ -9,6 +9,7 @@ import { AppliesModule } from './applies/applies.module';
 import { AdminModule } from './admin/admin.module';
 import { WhatssappModule } from './whatssapp/whatssapp.module';
 import { Auth2Module } from './auth2/auth2.module';
+import { BackupModule } from './backup/backup.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Auth2Module } from './auth2/auth2.module';
     AdminModule,
     WhatssappModule,
     Auth2Module,
+    BackupModule,
   ],
   controllers: [AppController],
   providers: [AppService],
