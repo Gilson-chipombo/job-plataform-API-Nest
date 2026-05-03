@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'prisma/prisma.service';
+import { EmailService } from 'src/email/email.service';
 import { AppliesService } from 'src/applies/applies.service';
 import * as bcrypt from 'bcrypt'; 
 @Injectable()
 export class CompaniesService {
-    constructor(private prisma: PrismaService ){}
+    constructor(
+        private prisma: PrismaService,
+        private emailService: EmailService,
+    ){}
 
     async findAll()
     {
@@ -26,17 +30,61 @@ export class CompaniesService {
     }
 
     async reject(id: number){
-        return this.prisma.company.update({ 
+        const company = await this.prisma.company.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            }
+        });
+
+        const updatedCompany = await this.prisma.company.update({ 
             where: {id},
             data: {state: "rejeitado"}
-        })
+        });
+
+        // Enviar email de rejeição
+        if (company) {
+            await this.emailService.sendRejectionEmail(
+                company.email,
+                company.name,
+                'Sua candidatura não foi aprovada nesta ocasião. Pode tentar novamente no futuro.'
+            ).catch(error => {
+                console.error('Erro ao enviar email de rejeição:', error);
+            });
+        }
+
+        return updatedCompany;
     }
 
     async approve(id: number){
-        return this.prisma.company.update({
+        const company = await this.prisma.company.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            }
+        });
+
+        const updatedCompany = await this.prisma.company.update({
             where: {id},
             data: {state: "aprovado"}
-        })
+        });
+
+        // Enviar email de aprovação
+        if (company) {
+            await this.emailService.sendApprovalEmail(
+                company.email,
+                company.name,
+                'company'
+            ).catch(error => {
+                console.error('Erro ao enviar email de aprovação:', error);
+            });
+        }
+
+        return updatedCompany;
     }
 
     async findByEmail(email: string)

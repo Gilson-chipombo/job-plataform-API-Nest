@@ -10,6 +10,7 @@ import { AdminModule } from './admin/admin.module';
 import { WhatssappModule } from './whatssapp/whatssapp.module';
 import { Auth2Module } from './auth2/auth2.module';
 import { BackupModule } from './backup/backup.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BackupModule } from './backup/backup.module';
     WhatssappModule,
     Auth2Module,
     BackupModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,6 +8,7 @@ import { UsersService } from 'src/users/users.service';
 import { CompaniesService } from 'src/companies/companies.service';
 import { AdminModule } from 'src/admin/admin.module';
 import { AdminService } from 'src/admin/admin.service';
+import { EmailModule } from 'src/email/email.module';
 
 
 @Module({
@@ -16,10 +17,10 @@ import { AdminService } from 'src/admin/admin.service';
       secret: 'supersecret',
       signOptions: { expiresIn: '1d' },
     }),
-    AuthModule,
     UsersModule,
     CompaniesModule,
-    AdminModule
+    AdminModule,
+    EmailModule
   ],
   providers: [
     AuthService, 

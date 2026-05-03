@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
+import { EmailService } from 'src/email/email.service';
 import * as bcrypt from 'bcrypt'; 
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService){}
+    constructor(
+        private prisma: PrismaService,
+        private emailService: EmailService,
+    ){}
 
     async findAll(){
         return this.prisma.student.findMany({ omit: {password: true }});
@@ -59,10 +63,32 @@ export class UsersService {
     }
 
     async reject(id: number){
-        return this.prisma.student.update({ 
+        const student = await this.prisma.student.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                fullName: true,
+                email: true,
+            }
+        });
+
+        const updatedStudent = await this.prisma.student.update({ 
             where: {id},
             data: {state: "rejeitado"}
-        })
+        });
+
+        // Enviar email de rejeição
+        if (student) {
+            await this.emailService.sendRejectionEmail(
+                student.email,
+                student.fullName,
+                'Sua candidatura não foi aprovada nesta ocasião. Pode tentar novamente no futuro.'
+            ).catch(error => {
+                console.error('Erro ao enviar email de rejeição:', error);
+            });
+        }
+
+        return updatedStudent;
     }
 
     async delete(id: number)
@@ -71,10 +97,32 @@ export class UsersService {
     }
 
     async approve(id: number){
-        return this.prisma.student.update({
+        const student = await this.prisma.student.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                fullName: true,
+                email: true,
+            }
+        });
+
+        const updatedStudent = await this.prisma.student.update({
             where: {id},
             data: {state: "aprovado"}
-        })
+        });
+
+        // Enviar email de aprovação
+        if (student) {
+            await this.emailService.sendApprovalEmail(
+                student.email,
+                student.fullName,
+                'student'
+            ).catch(error => {
+                console.error('Erro ao enviar email de aprovação:', error);
+            });
+        }
+
+        return updatedStudent;
     }
 
     async findByEmail(email: string)
