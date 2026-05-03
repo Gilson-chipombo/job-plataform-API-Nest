@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseInterceptors, UploadedFile, Delete, Put } from '@nestjs/common';
 import { AppliesService } from './applies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -32,11 +32,6 @@ export class AppliesController {
       return this.applies.create(data, cvPath);
     }
 
-    @Get(':id')
-    async getApplyById (@Param('id') id: String){
-        return await this.applies.getApplyById(+id);
-    }
-
     @Get('/vaga/:id')
     async appliesByVaga(@Param('id') id: String){
         return await this.applies.appliesByVaga(+id);
@@ -47,9 +42,24 @@ export class AppliesController {
       return this.applies.getStudentApply(+id);
     }
 
+    @Get(':id')
+    async getApplyById (@Param('id') id: String){
+        return await this.applies.getApplyById(+id);
+    }
+
     @Delete(':id')
     deleteStudentApply(@Param('id') id: String)
     {
       return this.applies.deleteApply(+id)
+    }
+
+    @Put(':id/approve')
+    async approveApplication(@Param('id') id: string) {
+      return await this.applies.approveApplication(+id);
+    }
+
+    @Put(':id/reject')
+    async rejectApplication(@Param('id') id: string, @Body() body?: { reason?: string }) {
+      return await this.applies.rejectApplication(+id, body?.reason);
     }
 }

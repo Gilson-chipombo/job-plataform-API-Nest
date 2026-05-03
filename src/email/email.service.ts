@@ -124,8 +124,42 @@ export class EmailService {
       <h2>Olá, ${name}!</h2>
       <p>Infelizmente, o seu registo foi rejeitado.</p>
       <p><strong>Motivo:</strong> ${reason}</p>
-      <p>Se acredita que isto é um erro, por favor contacte o suporte.</p>
     `;
     await this.sendEmail(email, subject, html);
+  }
+
+  async sendApplicationApprovalEmail(
+    studentEmail: string,
+    studentName: string,
+    jobTitle: string,
+    companyName: string,
+  ): Promise<void> {
+    const subject = `Candidatura Aprovada: ${jobTitle}`;
+    const html = `
+      <h2>Parabéns, ${studentName}!</h2>
+      <p>A sua candidatura foi <strong>aprovada</strong>!</p>
+      <p>A empresa <strong>${companyName}</strong> decidiu aprovar a sua candidatura para a vaga de <strong>${jobTitle}</strong>.</p>
+      <p>A empresa entrará em contacto em breve com os próximos passos.</p>
+      <p>Boa sorte!</p>
+    `;
+    await this.sendEmail(studentEmail, subject, html);
+  }
+
+  async sendApplicationRejectionEmail(
+    studentEmail: string,
+    studentName: string,
+    jobTitle: string,
+    companyName: string,
+    reason: string,
+  ): Promise<void> {
+    const subject = `Actualização sobre a sua candidatura: ${jobTitle}`;
+    const html = `
+      <h2>Olá, ${studentName}!</h2>
+      <p>Recebemos sua candidatura para a vaga de <strong>${jobTitle}</strong> na empresa <strong>${companyName}</strong>.</p>
+      <p>Infelizmente, não foi selecionado nesta ocasião.</p>
+      <p><strong>Motivo:</strong> ${reason}</p>
+      <p>Continue acompanhando outras oportunidades na nossa plataforma. Boa sorte!</p>
+    `;
+    await this.sendEmail(studentEmail, subject, html);
   }
 }
