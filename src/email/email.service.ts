@@ -12,17 +12,25 @@ export class EmailService {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
   }
 
   async sendEmail(to: string, subject: string, html: string): Promise<void> {
     try {
-      await this.transporter.sendMail({
-        from: process.env.EMAIL_USER,
+      console.log(`Enviando email para: ${to}, Assunto: ${subject}`);
+      
+      const result = await this.transporter.sendMail({
+        from: `"VagasAo" <${process.env.EMAIL_USER}>`,
         to,
         subject,
         html,
+        text: 'Veja este email em um cliente que suporta HTML',
       });
+      
+      console.log(`Email enviado com sucesso:`, result.messageId);
     } catch (error) {
       console.error('Erro ao enviar email:', error);
       throw error;
